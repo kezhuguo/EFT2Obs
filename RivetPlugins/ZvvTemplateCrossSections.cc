@@ -43,9 +43,9 @@ namespace Rivet {
       declare(nu_id, "Invisibles");
 
       // Book histograms
-      book(hist_pT_Z,       "pT_Z",80,0,1600);
-      book(_h_Z_pt,      12, 1, 1);
-      book(_h_Z_pt_norm,"h_Z_pt_norm", 13, 1, 1);
+      book(hist_pT_Z,       "pT_Z",80,200,1000);
+      book(_h_Z_pt,"h_Z_pt",      refData(12, 1, 1));
+      book(_h_Z_pt_norm,"h_Z_pt_norm", refData(13, 1, 1));
 
     }
 
