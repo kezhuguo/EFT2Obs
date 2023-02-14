@@ -3,6 +3,7 @@
 #include "Rivet/Projections/FinalState.hh"
 #include "Rivet/Projections/PromptFinalState.hh"
 #include "Rivet/Projections/DressedLeptons.hh"
+#include "Rivet/Projections/ParticleFinder.hh"
 
 namespace Rivet {
 
@@ -35,19 +36,19 @@ namespace Rivet {
       const PromptFinalState g_pfs = PromptFinalState(Cuts::abspid == PID::PHOTON);
       declare(g_pfs, "PromptFinalStatePhotons");
 
-      book(_h_l0l1_M, 40, 50, 130);
-      book(_h_llg_M, 40,50,200);
-      book(_h_l0l1_dr, 30, 0, 6);
-      book(_h_l0l1_pt, 40, 0, 100);
-      book(_h_l0l1_eta, 40, -2.5, 2.5);
+      book(_h_l0l1_M, "l0l1_M", 40, 50, 130);
+      book(_h_llg_M, "llg_M", 40,50,200);
+      book(_h_l0l1_dr, "l0l1_dr", 30, 0, 6);
+      book(_h_l0l1_pt, "l0l1_pt", 40, 0, 100);
+      book(_h_l0l1_eta, "l0l1_eta", 40, -2.5, 2.5);
       // book(_h_l0l1_deta, );
       // book(_h_l0l1_dphi, );
-      book(_h_l0_pt, 40, 0, 100);
-      book(_h_l0_eta, 40,-2.5,2.5);
-      book(_h_l1_pt, 40, 0, 100);
-      book(_h_l1_eta, 40,-2.5,2.5);
-      book(_h_g_pt, 40, 0, 100);
-      book(_h_g_eta, 40,-2.5,2.5);
+      book(_h_l0_pt, "l0_pt", 40, 0, 100);
+      book(_h_l0_eta, "l0_eta", 40,-2.5,2.5);
+      book(_h_l1_pt, "l1_pt", 40, 0, 100);
+      book(_h_l1_eta, "l1_eta", 40,-2.5,2.5);
+      book(_h_g_pt, "g_pt", 40, 0, 100);
+      book(_h_g_eta, "g_eta", 40,-2.5,2.5);
 
     }
 
@@ -81,9 +82,15 @@ namespace Rivet {
                                       || g.abseta() < etaCut_g_01);
       });
 
-      for (int i = 0; i < (int) vec_PFSByPt_g.size() - 1; i++) {
-        std::cout << vec_PFSByPt_g[i] << std::endl;
-      }
+      // vector<Particle> vec_PFSByPt_g222 = PFS_g.particlesByPt();
+
+      // for (int i = 0; i < (int) vec_PFSByPt_g222.size(); i++) {
+      //   std::cout << vec_PFSByPt_g222.size() << ", test1: " << vec_PFSByPt_g222[i].pT() << std::endl;
+      // }
+
+      // for (int i = 0; i < (int) vec_PFSByPt_g.size(); i++) {
+      //   std::cout << vec_PFSByPt_g.size() << " test2: " << vec_PFSByPt_g[i].pT() << std::endl;
+      // }
 
 
       int i1_e = -1, i2_e = -1, i3_e = -1;
@@ -132,6 +139,7 @@ namespace Rivet {
             _h_l0l1_eta, //_h_l0l1_deta, _h_l0l1_dphi, 
             _h_l0_pt, _h_l0_eta, _h_l1_pt, _h_l1_eta, 
             _h_g_pt, _h_g_eta}) {
+        // if (sumOfWeights() > 0) scale(x, crossSection() / picobarn / sumOfWeights());
         scale(x, crossSection() / picobarn / sumOfWeights());
       }
     }
@@ -176,7 +184,7 @@ namespace Rivet {
       // already in descending order
 
       // why not get two sets (pid and -pid), sort, get first element of each; because there are also other conditions
-      for (int i = 0; i < l_lepton - 1; i++) {
+      for (int i = 0; i < l_lepton; i++) {
         auto & l0 = vec_PFSByPt_l[i];
         for (int j = i + 1; j < l_lepton; j++) {
           auto & l1 = vec_PFSByPt_l[j];
